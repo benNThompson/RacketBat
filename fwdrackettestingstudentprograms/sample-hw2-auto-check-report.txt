@@ -1,0 +1,72 @@
+ASSIGNMENT: Homework 2
+ Language: (htdp intermediate)
+ Passed 46 out of 48 tests.
+
+PROBLEM: 2a. Movie Theater Profit
+ Passed 8 out of 8 tests.
+   PASS: File name matches 'hw2-movie.rkt'?
+   PASS: File evaluated without error?
+   PASS: File ran without timeout?
+   ----
+   PASS: Is 'total-profit' defined as a function of 1 parameter?
+   PASS: Does (total-profit 5) produce a number?
+   PASS: Does (total-profit 0) produce an expected result?
+   PASS: Does (total-profit 4) produce an expected result?
+   PASS: Does (total-profit 10) produce an expected result?
+
+PROBLEM: 2b. Course Grade
+ Passed 6 out of 8 tests.
+   PASS: File name matches 'hw2-coursegrade.rkt'?
+   PASS: File evaluated without error?
+   PASS: File ran without timeout?
+   ----
+   PASS: Is 'course-grade' defined as a function of 5 parameters?
+   PASS: Does (course-grade 80 90 80 70 75) produce a number?
+ x FAIL: Does (course-grade 80 90 80 70 75) produce an expected result?
+ x FAIL: Does (course-grade 50 85 100 70 75) produce an expected result?
+   PASS: Does (course-grade 100 100 100 100 100) produce an expected result?
+
+PROBLEM: 2c. Pizza Share
+ Passed 14 out of 14 tests.
+   PASS: File name matches 'hw2-pizzashare.rkt'?
+   PASS: File evaluated without error?
+   PASS: File ran without timeout?
+   ----
+   PASS: Is 'price-with-tip' defined as a function of 1 parameter?
+   PASS: Is 'share-with-tip' defined as a function of 2 parameters?
+   PASS: Does (price-with-tip 10) produce a number?
+   PASS: Does (share-with-tip 10 2) produce a number?
+   PASS: Does (price-with-tip 10) produce an expected result?
+   PASS: Does (share-with-tip 10 2) produce an expected result?
+   PASS: Does (share-with-tip 10 1) produce an expected result?
+   PASS: Does (share-pizza-cost 10 1) produce an expected result?
+   PASS: Does (share-pizza-cost 16 3) produce an expected result?
+   PASS: Does (share-pizza-cost 13 4) produce an expected result?
+   PASS: Does (share-pizza-cost 7 8) produce an expected result?
+
+PROBLEM: 2d. Lecture Cost
+ Passed 8 out of 8 tests.
+   PASS: File name matches 'hw2-lecturecost.rkt'?
+   PASS: File evaluated without error?
+   PASS: File ran without timeout?
+   ----
+   PASS: Is 'cost-per-lecture' defined as a function of 1 parameter?
+   PASS: Does (cost-per-lecture 20000) produce a number?
+   PASS: Does (cost-per-lecture 20000) produce an expected result?
+   PASS: Does (cost-per-lecture 24975) produce an expected result?
+   PASS: Does (cost-per-lecture 24420) produce an expected result?
+
+PROBLEM: 2e. Barometer
+ Passed 10 out of 10 tests.
+   PASS: File name matches 'hw2-barometer.rkt'?
+   PASS: File evaluated without error?
+   PASS: File ran without timeout?
+   ----
+   PASS: Is 'barometer-dir' defined as a function of 2 parameters?
+   PASS: Does (barometer-dir 40 50) produce a string?
+   PASS: Does (barometer-dir 40 40) produce an expected result?
+   PASS: Does (barometer-dir 40 41) produce an expected result?
+   PASS: Does (barometer-dir 40 50) produce an expected result?
+   PASS: Does (barometer-dir 39 40) produce an expected result?
+   PASS: Does (barometer-dir 10 40) produce an expected result?
+

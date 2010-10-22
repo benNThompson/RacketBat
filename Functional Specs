@@ -1,0 +1,15 @@
+RacketBat
+---------
+
+What we will do
+---------------
+We will make a website where students are presented with programming problems; they will program solutions to these problems in Racket.
+Teachers will be able to write questions and make tests.
+In a test situation, the user will not be notified of whether their answer is right or wrong or abusive, but outside of tests, they will have the chance to rewrite the code until it works.
+
+How we will do it
+-----------------
+Get DrRacket running on the server.
+Figure out a way for it to take the code input by the user and send it to DrRacket to be run in a sandbox.
+If something bad is found, the user will be notified and the code will not be run.
+Teachers will be able to create questions, edit or remove existing questions, and/or put questions into a test.
