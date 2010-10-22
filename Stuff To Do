@@ -1,0 +1,33 @@
+Rather than asking what you can be doing, here is a list of bunches of things that need to be done in our project! If you want to claim a task as yours, put your name in parentheses next to it
+
+-Functional Specs:
+	need to be improved drastically. Currently, they are vague and 		uninformative. We need much more detail as to what the user will see, 		what they will be able to do, the different types of users, etc, etc.
+
+-Technical Specs:
+	Right now, these are nonexistent, save for a tiny bit of data specs.
+	The technical specs should explain what languages, programs, libraries,
+	etc. we will use. Also, the technical specs should explain in moderate
+	detail how we are going to use said languages and libraries; Basically,
+	the functional specs describe the front end, and the technical specs
+	describe the back end.
+
+-Docs for the grader:
+	One of OBs's friends was nice enough to give us a Racket grader he
+	made. Someone needs to explore it thouroughly and learn how to use it,
+	then make some docs the rest of our group can use so not everyone has
+	to read through all of it, and so we have something to reference when
+	we forget how things work.
+
+-RacketIO (Ben):
+	This is going to be how Racket sends information to and recieves
+	information from Java. It will only handle transmission of data, not
+	actual grading or anything like that.
+
+-Lift/Scala:
+	We need a backend to actually run our website
+
+-JavaIO:
+	Since, to my knowledge, Scala does not have a way to do filestreamIO,
+	we will be using Java's. Someone needs to figure out how to get the
+	code from Scala to Java, and then on to Racket, and have it wait for
+	the results back, and give them to Scala.
