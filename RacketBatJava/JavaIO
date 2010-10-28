@@ -1,0 +1,17 @@
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
+import java.net.ServerSocket;
+import java.net.Socket;
+
+public class Read {
+	public static void main(String[] args) {
+		Socket sock = new Socket("localhost", 2000);
+		PrintWriter out = new PrintWriter(sock.getOutputStream());
+		out.println("It worked.");
+		out.println("We think,");
+		out.pringln("hopefully.");
+		out.close();
+		sock.close();
+	}
+}

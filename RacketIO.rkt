@@ -3,12 +3,12 @@
 
 ;;OUT
 
-(define-values (in out) (tcp-connect "localhost" 2000))
+;(define-values (in out) (tcp-connect "localhost" 2000))
 
-(display "Hello there\n" out)
+;(display "Hello there\n" out)
 
-(close-output-port out)
-(close-input-port in)
+;(close-output-port out)
+;(close-input-port in)
 
 ;;IN
 
