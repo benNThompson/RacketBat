@@ -25,9 +25,9 @@ public class Read {
 	public static void main(String[] args) throws Exception {
 		Socket sock = new Socket("localhost", 2000);
 		PrintWriter out = new PrintWriter(sock.getOutputStream());
-		out.println("It worked.");
-		out.println("At least,");
-		out.println("we think it did.");
+		out.print("It worked.");
+		out.print("At least,");
+		out.print("we think it did.");
 		BufferedReader in = new BufferedReader(
 				new InputStreamReader(sock.getInputStream()));
 		String input;

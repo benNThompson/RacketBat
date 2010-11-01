@@ -28,6 +28,7 @@ public class Read {
 		out.println("It worked.");
 		out.println("At least,");
 		out.println("we think it did.");
+		out.close();
 		BufferedReader in = new BufferedReader(
 				new InputStreamReader(sock.getInputStream()));
 		String input;
@@ -35,7 +36,6 @@ public class Read {
 				System.out.println(input);
 		}
 		in.close();
-		out.close();
 		sock.close();
 	}
 }

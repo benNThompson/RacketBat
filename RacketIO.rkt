@@ -1,27 +1,21 @@
 #lang racket
 (require racket/tcp)
 
-;;OUT
+;;;OUT
+;
+;(define-values (in out) (tcp-connect "localhost" 2000))
 
-(define-values (in out) (tcp-connect "localhost" 2000))
 
-(display "Hello there\n" out)
+(define lstnr (tcp-listen 2000))
+(define-values (in out) (tcp-accept lstnr))
 
-(close-output-port out)
+(for ([line (in-lines in)])
+  (display (string-append line "\n")))
+
+(display "Yep," out)
+(display "it worked." out)
+(display "Huzzah!" out)
+
 (close-input-port in)
-
-;;IN
-
-;(define lstnr (tcp-listen 2000))
-;(define-values (in out) (tcp-accept lstnr))
-;
-;(for ([line (in-lines in)])
-;  (display (string-append line "\n")))
-;
-;;(display "Yep," out)
-;;(display "it worked." out)
-;;(display "Huzzah!" out)
-;
-;(close-input-port in)
-;(close-output-port out)
-;(tcp-close lstnr)
+(close-output-port out)
+(tcp-close lstnr)

@@ -23,7 +23,8 @@ public class Read {
 //	}
 
 	public static void main(String[] args) throws Exception {
-		Socket sock = new Socket("localhost", 2000);
+		ServerSocket ss = new ServerSocket(2000);
+		Socket sock = ss.accept();
 		PrintWriter out = new PrintWriter(sock.getOutputStream());
 		out.println("It worked.");
 		out.println("At least,");
