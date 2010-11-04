@@ -17,9 +17,9 @@
 (set!-values (in out)
              (tcp-connect "localhost" 2001))
 
-(display "Yep," out)
-(display "it worked." out)
-(display "Huzzah!" out)
+(display "Yep,\n" out)
+(display "it worked.\n" out)
+(display "Huzzah!\n" out)
 
 (close-input-port in)
 (close-output-port out)
