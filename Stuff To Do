@@ -1,7 +1,12 @@
-Rather than asking what you can be doing, here is a list of bunches of things that need to be done in our project! If you want to claim a task as yours, put your name in parentheses next to it
+Rather than asking what you can be doing, here is a list of bunches
+of things that need to be done in our project!
+If you want to claim a task as yours,
+put your name in parentheses next to it
 
 -Functional Specs:
-	need to be improved drastically. Currently, they are vague and 		uninformative. We need much more detail as to what the user will see, 		what they will be able to do, the different types of users, etc, etc.
+	need to be improved drastically. Currently, they are vague and
+	uninformative. We need much more detail as to what the user will see,
+	what they will be able to do, the different types of users, etc, etc.
 
 -Technical Specs:
 	Right now, these are nonexistent, save for a tiny bit of data specs.
@@ -11,12 +16,26 @@ Rather than asking what you can be doing, here is a list of bunches of things th
 	the functional specs describe the front end, and the technical specs
 	describe the back end.
 
--Docs for the grader:
-	One of OBs's friends was nice enough to give us a Racket grader he
-	made. Someone needs to explore it thouroughly and learn how to use it,
-	then make some docs the rest of our group can use so not everyone has
-	to read through all of it, and so we have something to reference when
-	we forget how things work.
+-Grader:
+	We need to make our own grader that can take in a students assignment
+	and give back the number of tests passed and failed. There are two
+	main parts to this: firstly, the backend, or the grader itself, which
+	will be fairly abstract, and doesnt actually check anything itself, it
+	just runs the tests and reports the number passed, failed, etc.
+	Secondly, the tests themselves. Since making an entirely new grader for
+	each project would really suck, we want OB to be able to just write the
+	test cases for the project and make them into a suite, and then be able
+	to run them against student assignments using the grader. Basically,
+	all of the abstract, generalized stuff makes up the grader. The actual
+	tests will be seperate.
+
+	First order of business will be to make some functional and technical
+	specs for the grader. For info on how to do that, see above. We will
+	probably want to organize tests into suites, which in turn are grouped
+	into assignments.
+
+	When the specs are done, the actual coding can begin. More on that when
+	the time comes.
 
 -RacketIO (Ben):
 	This is going to be how Racket sends information to and recieves
@@ -28,6 +47,6 @@ Rather than asking what you can be doing, here is a list of bunches of things th
 
 -JavaIO:
 	Since, to my knowledge, Scala does not have a way to do filestreamIO,
-	we will be using Java's. Someone needs to figure out how to get the
+	we will be using Javas. Someone needs to figure out how to get the
 	code from Scala to Java, and then on to Racket, and have it wait for
 	the results back, and give them to Scala.
