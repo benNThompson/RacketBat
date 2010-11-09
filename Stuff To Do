@@ -16,6 +16,10 @@ put your name in parentheses next to it
 	the functional specs describe the front end, and the technical specs
 	describe the back end.
 
+-Website Mockup (Caleb and Andrew):
+	Make a fake website that looks like codingbat. It doesnt need to do
+	anything, just be something to work towards
+
 -Grader:
 	We need to make our own grader that can take in a students assignment
 	and give back the number of tests passed and failed. There are two
