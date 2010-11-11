@@ -3,6 +3,8 @@ of things that need to be done in our project!
 If you want to claim a task as yours,
 put your name in parentheses next to it
 
+-Learn Python and Django!
+
 -Functional Specs:
 	need to be improved drastically. Currently, they are vague and
 	uninformative. We need much more detail as to what the user will see,
@@ -45,12 +47,3 @@ put your name in parentheses next to it
 	This is going to be how Racket sends information to and recieves
 	information from Java. It will only handle transmission of data, not
 	actual grading or anything like that.
-
--Lift/Scala:
-	We need a backend to actually run our website
-
--JavaIO:
-	Since, to my knowledge, Scala does not have a way to do filestreamIO,
-	we will be using Javas. Someone needs to figure out how to get the
-	code from Scala to Java, and then on to Racket, and have it wait for
-	the results back, and give them to Scala.
