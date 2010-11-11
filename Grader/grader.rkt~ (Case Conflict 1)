@@ -13,7 +13,7 @@
 (struct function-test
   (name checks))
 
- 
+
 (define in
   (open-input-file "StudentWork"))
 
