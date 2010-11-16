@@ -1,30 +1,41 @@
 #lang racket
-
-(define in
-  (open-input-file "StudentWork"))
-
-(define (reset)
-  (set! in (open-input-file "StudentWork")))
+(require racket/sandbox)
+(provide (all-defined-out))
 
 ;; check: any any integer
 ;; actual: function call of the student's function with certain arguments
 ;; expected: the value the function call should produce
 ;; point-value: the number of points this check is worth
 (struct check
-  (actual expected point-value)
+  (actual expected points)
   #:transparent)
 
-;; function-test: symbol list-of-check
-;; name: the name of this group of checks, usually the name of the tested function
-;; checks: a list of the checks to apply to the function
-(struct function-test
-  (name checks)
-  #:transparent)
-
-;; func-checks: symbol (any any integer) ... -> function-test
-;; aName: a symbol which is the name for the group of checks
-;; (actualResult expectedResult pointValue) ...: the components of the checks for the function
-(define-syntax func-checks
+;; check-suite: symbol (any any integer) ... -> void
+;; consumes: a name for the group of checks
+;; produces: nothing, but defines aName as a list of the checks
+(define-syntax check-suite
   (syntax-rules ()
-    ((func-checks aName (actualResult expectedResult pointValue) ...)
-     (function-test aName (list (check actualResult expectedResult pointValue) ...)))))
+    ((_ aName (actualResult expectedResult pointValue) ...)
+     (define aName (list (check (quote actualResult) expectedResult pointValue) ...)))))
+
+;; run-checks: list-of-checks evaluator -> void
+;; consumes: a list of checks and an evaluator to run them against
+;; produces: Displays the number passed and failed, and the points scored out of the possible points
+(define (run-checks aSuite anEva)
+  (let ([totalPoints 0]
+        [numChecks (length aSuite)]
+        [points 0]
+        [passed 0])
+    (for ([c aSuite])
+      (set! totalPoints (+ totalPoints (check-points c)))
+      (when (equal? (anEva (check-actual c)) (anEva (check-expected c)))
+          (set! points (+ points (check-points c)))
+          (set! passed (+ passed 1)))
+    (display (string-append "Passed/Failed: "
+                            (number->string passed)
+                            "/"
+                            (number->string numChecks)
+                            "\nPoints: "
+                            (number->string points)
+                            "/"
+                            (number->string totalPoints)))))
