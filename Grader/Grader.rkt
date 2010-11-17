@@ -1,5 +1,4 @@
 #lang racket
-(require racket/sandbox)
 (provide (all-defined-out))
 
 ;; check: any any integer
@@ -10,13 +9,13 @@
   (actual expected points)
   #:transparent)
 
-;; check-suite: symbol (any any integer) ... -> void
+;; check-suite: ([any any any] ...) -> list-of-check
 ;; consumes: a name for the group of checks
 ;; produces: nothing, but defines aName as a list of the checks
 (define-syntax check-suite
   (syntax-rules ()
-    ((_ aName (actualResult expectedResult pointValue) ...)
-     (define aName (list (check (quote actualResult) expectedResult pointValue) ...)))))
+    ((_ ([actualResult expectedResult pointValue] ...))
+     (list (check (quote actualResult) expectedResult pointValue) ...))))
 
 ;; run-checks: list-of-checks evaluator -> void
 ;; consumes: a list of checks and an evaluator to run them against
@@ -30,7 +29,7 @@
       (set! totalPoints (+ totalPoints (check-points c)))
       (when (equal? (anEva (check-actual c)) (anEva (check-expected c)))
           (set! points (+ points (check-points c)))
-          (set! passed (+ passed 1)))
+          (set! passed (+ passed 1))))
     (display (string-append "Passed/Failed: "
                             (number->string passed)
                             "/"
