@@ -11,4 +11,8 @@
                       ((my-add 10 -5) 5 2)
                       ((my-add 1 0) 3 10)))
 
-(run-checks my-add-tests ev)
+(define mystery-tests (check-suite
+                       ((mystery 1) 10 1)
+                       ((mystery 2) 20 1)))
+
+(run-suites my-add-tests mystery-tests ev)

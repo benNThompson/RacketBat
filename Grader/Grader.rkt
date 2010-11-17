@@ -9,7 +9,7 @@
   (actual expected points)
   #:transparent)
 
-;; check-suite: ([any any any] ...) -> list-of-check
+;; check-suite: (any any any) ... -> list-of-check
 ;; consumes: a name for the group of checks
 ;; produces: nothing, but defines aName as a list of the checks
 (define-syntax check-suite
@@ -17,10 +17,10 @@
     ((_ (actualResult expectedResult pointValue) ...)
      (list (check (quote actualResult) expectedResult pointValue) ...))))
 
-;; run-checks: list-of-checks evaluator -> void
+;; run-suite: list-of-check evaluator -> void
 ;; consumes: a list of checks and an evaluator to run them against
 ;; produces: Displays the number passed and failed, and the points scored out of the possible points
-(define-syntax run-checks
+(define-syntax run-suite
   (syntax-rules ()
     ((_ aSuite anEva)
      (let ([totalPoints 0]
@@ -45,3 +45,12 @@
                                (number->string points)
                                "/"
                                (number->string totalPoints)))))))
+
+;; run-suites: list-of-check ... evaluator -> void
+;; consumes: multiple check suites
+;; produces: runs them all and prints the results
+(define-syntax run-suites
+  (syntax-rules ()
+    ((_ aSuite ... anEva)
+     (for/list ([s (list aSuite ...)])
+       (run-suite s anEva)))))
