@@ -44,7 +44,8 @@
                                "\nPoints: "
                                (number->string points)
                                "/"
-                               (number->string totalPoints)))))))
+                               (number->string totalPoints)
+                               "\n\n"))))))
 
 ;; run-suites: list-of-check ... evaluator -> void
 ;; consumes: multiple check suites
@@ -52,5 +53,5 @@
 (define-syntax run-suites
   (syntax-rules ()
     ((_ aSuite ... anEva)
-     (for/list ([s (list aSuite ...)])
-       (run-suite s anEva)))))
+     (for-each (lambda (s) (run-suite s anEva))
+               (list aSuite ...)))))
