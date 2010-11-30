@@ -33,12 +33,18 @@
      (let ([totalPoints 0]
            [numChecks (length (suite-checks aSuite))]
            [points 0]
-           [passed 0])
+           [passed 0]
+           [failMessage ""])
        (for ([c (suite-checks aSuite)])
          (set! totalPoints (+ totalPoints (check-points c)))
-         (when (equal? (anEva (check-actual c)) (anEva (check-expected c)))
-           (set! points (+ points (check-points c)))
-           (set! passed (+ passed 1))))
+         (if (equal? (anEva (check-actual c)) (anEva (check-expected c)))
+           (begin (set! points (+ points (check-points c)))
+                  (set! passed (+ passed 1)))
+           (set! failMessage
+                 (string-append failMessage
+                                (format "Expected: ~a\nActual: ~a\n"
+                                        (check-expected c)
+                                        (anEva (check-actual c)))))))
        (display (string-append (suite-name aSuite)
                                "\n"
                                (build-string (string-length (suite-name aSuite)) (lambda (i) #\-))
@@ -51,7 +57,9 @@
                                (number->string points)
                                "/"
                                (number->string totalPoints)
-                               "\n\n"))))))
+                               "\n\n"
+                               failMessage
+                               "\n"))))))
 
 ;; run-suites: list-of-check ... evaluator -> void
 ;; consumes: multiple check suites
