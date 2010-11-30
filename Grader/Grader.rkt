@@ -9,13 +9,20 @@
   (actual expected points)
   #:transparent)
 
-;; check-suite: (any any any) ... -> list-of-check
-;; consumes: a name for the group of checks
-;; produces: nothing, but defines aName as a list of the checks
-(define-syntax check-suite
+;; suite: string list-of-check
+;; name: the name to display when running the suite
+;; checks: the checks that make up the suite
+(struct suite
+  (name checks)
+  #:transparent)
+
+;; make-check-suite: string (any any any) ... -> suite
+;; consumes: a name and the bones of several checks
+;; produces: a suite with the given name and checks
+(define-syntax make-check-suite
   (syntax-rules ()
-    ((_ (actualResult expectedResult pointValue) ...)
-     (list (check (quote actualResult) expectedResult pointValue) ...))))
+    ((_ aName (actualResult expectedResult pointValue) ...)
+     (suite aName (list (check (quote actualResult) expectedResult pointValue) ...)))))
 
 ;; run-suite: list-of-check evaluator -> void
 ;; consumes: a list of checks and an evaluator to run them against
@@ -24,18 +31,17 @@
   (syntax-rules ()
     ((_ aSuite anEva)
      (let ([totalPoints 0]
-           [numChecks (length aSuite)]
+           [numChecks (length (suite-checks aSuite))]
            [points 0]
-           [passed 0]
-           [name (symbol->string (quote aSuite))])
-       (for ([c aSuite])
+           [passed 0])
+       (for ([c (suite-checks aSuite)])
          (set! totalPoints (+ totalPoints (check-points c)))
          (when (equal? (anEva (check-actual c)) (anEva (check-expected c)))
            (set! points (+ points (check-points c)))
            (set! passed (+ passed 1))))
-       (display (string-append name
+       (display (string-append (suite-name aSuite)
                                "\n"
-                               (build-string (string-length name) (lambda (i) #\-))
+                               (build-string (string-length (suite-name aSuite)) (lambda (i) #\-))
                                "\n"
                                "Passed/Failed: "
                                (number->string passed)
@@ -52,6 +58,6 @@
 ;; produces: runs them all and prints the results
 (define-syntax run-suites
   (syntax-rules ()
-    ((_ aSuite ... anEva)
+    ((_ anEva aSuite ...)
      (for-each (lambda (s) (run-suite s anEva))
                (list aSuite ...)))))
