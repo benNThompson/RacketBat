@@ -24,28 +24,30 @@
     ((_ aName (actualResult expectedResult pointValue) ...)
      (suite aName (list (check (quote actualResult) expectedResult pointValue) ...)))))
 
-;; run-suite: list-of-check evaluator -> void
-;; consumes: a list of checks and an evaluator to run them against
-;; produces: Displays the number passed and failed, and the points scored out of the possible points
+;; 
+
+;; run-suite: suite evaluator -> void
+;; consumes: a suite and an evaluator to run it against
+;; produces: displays the number passed and failed, and the points scored out of the possible points
 (define-syntax run-suite
   (syntax-rules ()
-    ((_ aSuite anEva)
+    ((_ anEva aSuite)
      (let ([totalPoints 0]
            [numChecks (length (suite-checks aSuite))]
            [points 0]
            [passed 0]
-           [curTest 0]
+           [currentTest 0]
            [failMessage ""])
        (for ([c (suite-checks aSuite)])
          (set! totalPoints (+ totalPoints (check-points c)))
-         (set! curTest (+ curTest 1))
+         (set! currentTest (+ currentTest 1))
          (if (equal? (anEva (check-actual c)) (anEva (check-expected c)))
            (begin (set! points (+ points (check-points c)))
                   (set! passed (+ passed 1)))
            (set! failMessage
                  (string-append failMessage
                                 (format "Check #~a\nFunction Call: ~a\nExpected: ~a\nActual: ~a\n"
-                                        curTest
+                                        currentTest
                                         (check-actual c)
                                         (check-expected c)
                                         (anEva (check-actual c)))))))
@@ -53,7 +55,7 @@
                                "\n"
                                (build-string (string-length (suite-name aSuite)) (lambda (i) #\-))
                                "\n"
-                               "Passed/Failed: "
+                               "Passed/Total: "
                                (number->string passed)
                                "/"
                                (number->string numChecks)
@@ -71,5 +73,5 @@
 (define-syntax run-suites
   (syntax-rules ()
     ((_ anEva aSuite ...)
-     (for-each (lambda (s) (run-suite s anEva))
+     (for-each (lambda (s) (run-suite anEva s))
                (list aSuite ...)))))
