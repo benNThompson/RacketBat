@@ -34,15 +34,18 @@
            [numChecks (length (suite-checks aSuite))]
            [points 0]
            [passed 0]
+           [curTest 0]
            [failMessage ""])
        (for ([c (suite-checks aSuite)])
          (set! totalPoints (+ totalPoints (check-points c)))
+         (set! curTest (+ curTest 1))
          (if (equal? (anEva (check-actual c)) (anEva (check-expected c)))
            (begin (set! points (+ points (check-points c)))
                   (set! passed (+ passed 1)))
            (set! failMessage
                  (string-append failMessage
-                                (format "Expected: ~a\nActual: ~a\n"
+                                (format "Check #~a\nExpected: ~a\nActual: ~a\n"
+                                        curTest
                                         (check-expected c)
                                         (anEva (check-actual c)))))))
        (display (string-append (suite-name aSuite)

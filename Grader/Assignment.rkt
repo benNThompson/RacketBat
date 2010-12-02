@@ -1,6 +1,7 @@
 #lang racket
 (require "Grader.rkt")
 (require racket/sandbox)
+(require readline)
 
 (define ev (make-module-evaluator (string->path "StudentWork.rkt")
                                   #:allow-read (list (string->path "."))))
