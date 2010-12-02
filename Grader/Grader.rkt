@@ -44,8 +44,9 @@
                   (set! passed (+ passed 1)))
            (set! failMessage
                  (string-append failMessage
-                                (format "Check #~a\nExpected: ~a\nActual: ~a\n"
+                                (format "Check #~a\nFunction Call: ~a\nExpected: ~a\nActual: ~a\n"
                                         curTest
+                                        (check-actual c)
                                         (check-expected c)
                                         (anEva (check-actual c)))))))
        (display (string-append (suite-name aSuite)
