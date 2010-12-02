@@ -24,7 +24,35 @@
     ((_ aName (actualResult expectedResult pointValue) ...)
      (suite aName (list (check (quote actualResult) expectedResult pointValue) ...)))))
 
-;; 
+;; fail-msg: check int evaluator -> string
+;; consumes: a failed check, its number, and the corresponding evaluator
+;; produces: the fail message
+(define (fail-msg aCheck checkNum anEva)
+  (format "Check #~a\nFunction Call: ~a\nExpected: ~a\nActual: ~a\n"
+                                        checkNum
+                                        (check-actual aCheck)
+                                        (check-expected aCheck)
+                                        (anEva (check-actual aCheck))))
+
+;; suite-msg: string int int int int string -> string
+;; consumes: a suite, the checks passed, the total checks, the earned, the possible points, and the fail message
+;; produces: the message to display for the suite
+(define (suite-msg aSuiteName passed numChecks points totalPoints failMessage)
+  (string-append aSuiteName
+                 "\n"
+                 (build-string (string-length aSuiteName) (lambda (i) #\-))
+                 "\n"
+                 "Passed/Total: "
+                 (number->string passed)
+                 "/"
+                 (number->string numChecks)
+                 "\nPoints: "
+                 (number->string points)
+                 "/"
+                 (number->string totalPoints)
+                 "\n\n"
+                 failMessage
+                 "\n"))
 
 ;; run-suite: suite evaluator -> void
 ;; consumes: a suite and an evaluator to run it against
@@ -46,26 +74,8 @@
                   (set! passed (+ passed 1)))
            (set! failMessage
                  (string-append failMessage
-                                (format "Check #~a\nFunction Call: ~a\nExpected: ~a\nActual: ~a\n"
-                                        currentTest
-                                        (check-actual c)
-                                        (check-expected c)
-                                        (anEva (check-actual c)))))))
-       (display (string-append (suite-name aSuite)
-                               "\n"
-                               (build-string (string-length (suite-name aSuite)) (lambda (i) #\-))
-                               "\n"
-                               "Passed/Total: "
-                               (number->string passed)
-                               "/"
-                               (number->string numChecks)
-                               "\nPoints: "
-                               (number->string points)
-                               "/"
-                               (number->string totalPoints)
-                               "\n\n"
-                               failMessage
-                               "\n"))))))
+                                (fail-msg c currentTest anEva)))))
+       (display (suite-msg (suite-name aSuite) passed numChecks points totalPoints failMessage))))))
 
 ;; run-suites: list-of-check ... evaluator -> void
 ;; consumes: multiple check suites
