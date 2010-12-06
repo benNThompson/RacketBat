@@ -1,9 +1,8 @@
 #lang racket
 (require "Grader.rkt")
 (require racket/sandbox)
-(require htdp/image)
 
-(define ev (make-module-evaluator (string->path "StudentWork.rkt")
+(define ev (make-module-evaluator (string->path "StudentWorkPosn.rkt")
                                   #:allow-read (list (string->path "."))))
 
 (define southeast-tests (make-check-suite
@@ -30,10 +29,10 @@
 
 (define posn+-tests (make-check-suite
                      "Tests for posn+"
-                     ((posn+ (make posn 50 50) (make posn 50 50)) (make posn 100 100) 1)
-                     ((posn+ (make posn 50 60) (make posn 50 40)) (make posn 100 100) 1)
-                     ((posn+ (make posn 0 0) (make posn 50 50)) (make posn 50 50) 1)
-                     ((posn+ (make posn 20 50) (make posn 50 50)) (make posn 70 100) 1)))
+                     ((posn+ (make-posn 50 50) (make-posn 50 50)) 1 1)
+                     ((posn+ (make-posn 50 60) (make-posn 50 40)) 1 1)
+                     ((posn+ (make-posn 0 0) (make-posn 50 50)) 1 1)
+                     ((posn+ (make-posn 20 50) (make-posn 50 50)) 1 1)))
 
 ;onimage? test (cannot do, need to RTFM)
 
@@ -41,10 +40,10 @@
                         "Tests for distance"
                         ((distance (make-posn 50 50) (make-posn 50 50)) 0 1)
                         ((distance (make-posn 20 50) (make-posn 20 50)) 0 1)
-                        ((distance (make-posn 5 5) (make-posn 15 7)) sqrt(104) 1)
-                        ((distance (make-posn 50 50) (make-posn 100 100)) sqrt(5000) 1)
-                        ((distance (make-posn 23 40) (make-posn 77 87)) sqrt(5125) 1)
-                        ((distance (make-posn 5 9) (make-posn 27 16)) sqrt(533) 1)))
+                        ((distance (make-posn 5 5) (make-posn 15 7)) (sqrt 104) 1)
+                        ((distance (make-posn 50 50) (make-posn 100 100)) (sqrt 5000) 1)
+                        ((distance (make-posn 23 40) (make-posn 77 87)) (sqrt 5125) 1)
+                        ((distance (make-posn 5 9) (make-posn 27 16)) (sqrt 533) 1)))
 
 
 ;(define my-add-tests (make-check-suite
@@ -55,4 +54,4 @@
 ;                      ((my-add 1 0) 3 10)))
 
 
-(run-suites ev southeast-tests which-direction-tests posn+-tests distance-tests)
+(run-suites ev southeast-tests which-direction-tests distance-tests posn+-tests)

@@ -28,7 +28,7 @@
 ;; consumes: a failed check, its number, and the corresponding evaluator
 ;; produces: the fail message
 (define (fail-msg aCheck checkNum anEva)
-  (format "Check #~a\nFunction Call: ~a\nExpected: ~a\nActual: ~a\n"
+  (format "Check #~a\nFunction Call: ~a\nExpected: ~a\nActual: ~a\n\n"
                                         checkNum
                                         (check-actual aCheck)
                                         (check-expected aCheck)
