@@ -1,7 +1,6 @@
 #lang racket
 (require "Grader.rkt")
 (require racket/sandbox)
-(require readline)
 (require htdp/image)
 
 (define ev (make-module-evaluator (string->path "StudentWork.rkt")
