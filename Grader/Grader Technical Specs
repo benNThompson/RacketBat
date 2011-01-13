@@ -1,0 +1,45 @@
+RacketBat Grader Technical Specs
+
+check
+-----
+The check structures are the different test cases that will be used
+in the test suite. These are important as a test suite would be
+worthless without the checks. Also they will be what determines
+whether or not the function is correct and deserves points.
+
+suite
+-----
+The suite structures are the actual test suites. They are composed of
+the name of the suite, such as posn-assignment-test or something
+similar to that. The suite also is composed of a list-of-checks which
+will be run to determine the points awarded.
+
+make-check-suite
+----------------
+This function is used to make the different suites as easily as
+possible. This function is basically a template for the suite
+creation, but templates make life easier and this also makes the test
+suites.
+
+fail-msg
+--------
+The purpose for this function is that it displays when a check fails
+so that the teacher can see what happened or what went wrong, and
+then look over the code and tell them how to fix it.
+
+run-suite
+---------
+This function is used to run a test suite within the grader, which
+is itself a test suite of test suites. This function runs one test
+suite and then outputs the results of the test. Since the programs
+will be done in the racket language and also graded in it, there 
+wont be any errors of whether or not the code will work correctly.
+However the teacher can still go through and add extra points for
+style if the so choose.
+
+run-suites
+----------
+This function is what makes the grader grade. The purpose of this
+function is to run all of the test suites put into the grader, and
+then to output the results. This function is the final test for the
+assignment that has been submitted.

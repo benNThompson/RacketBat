@@ -1,0 +1,472 @@
+complicated
+(require schemeunit)
+(require schemeunit/text-ui)
+
+
+;;;; 1
+
+;; a message is
+;; (make-email string listof-strings string string)
+(define-struct message (sender recipients subj body))
+
+;; a system is
+;; (make-system listof-strings listof-messages)
+(define-struct system (users convos))
+
+;;;;;;; 2
+
+(define MAILSYS (make-system (list "Phil" "Brian" "Lyle" "John" "Mark" "Bill" "David" "Michael" "Caleb" "Jared")
+                             empty))
+
+(define MSGA (make-message "Phil"
+                           (list "Caleb" "John" "Mark" "Jared")
+                           "XBOX"
+                           "Get on live tomorrow at 8pm to play some borderlands"))
+(define MSGB (make-message "Phil"
+                           (list "Jared" "Alfanso" "Joel")
+                           "XBOX NOW"
+                           "Get on live tonight at 8pm to play some borderlands"))
+;;;;;; 3
+
+;; inlist?: string listof-string -> boolean
+;; consumes: a string and a list of strings
+;; produces: whether or not the string is in the list
+(define (inlist? str alos)
+  (cond
+    [(empty? alos) false]
+    [(string=? str (first alos)) true]
+    [else (inlist? str (rest alos))]))
+
+
+;; recipients-known?: message -> boolean
+;; consumes: a message
+;; produces: whether or not the recipients are known users
+(define (recipients-known? a-message)
+  (cond
+    [(empty? (message-recipients a-message)) true]
+    [(inlist? (first (message-recipients a-message)) (system-users MAILSYS))
+     (recipients-known? (make-message (message-sender a-message)
+                                      (rest (message-recipients a-message))
+                                      (message-subj a-message)
+                                      (message-body a-message)))]
+    [else false]))
+
+;;;;; 4
+
+;; add-user: string -> list-of-string
+;; consumes: a username
+;; produces: a new list-of-users with that person in it
+(define (add-user str)
+  (set-system-users! MAILSYS (cons str (system-users MAILSYS))))
+
+;;;; 5
+
+;; new-conversation: string list-of-string string string -> void
+;; consumes: a sender, recipients, subj, and body
+;; produces: void
+;; effect: add a conversation to MAILSYS
+(define (new-conversation sndr alor subject msgbdy)
+  (set-system-convos! MAILSYS (cons (make-message
+                                       sndr
+                                       alor
+                                       subject
+                                       msgbdy) (system-convos MAILSYS))))
+
+;;;; 6
+
+;; add-sender: string listof-string -> listof-string
+;; consumes: a sender and list of recipients
+;; produces: a new list of recipients with the sender in it
+(define (add-sender str alos)
+  (cons str alos))
+
+;; remove-recipient: string listof-string -> listof-string
+;; consumes: a recipient and list of recipients
+;; produces: the new list with that recipient missing
+(define (remove-recipient str alos)
+  (cond
+    [(string=? str (first alos)) (rest alos)]
+    [else (cons (first alos) (remove-recipient str (rest alos)))]))
+
+;; reply-to: message string string -> void
+;; consumes: a message a recipient and a body
+;; produces: void
+;; effect: stores a new message as reply to previous message
+(define (reply-to a-message recsndr replybody)
+  (new-conversation recsndr
+                    (add-sender (message-sender a-message)
+                                (remove-recipient recsndr
+                                                  (message-recipients a-message)))
+                    (message-subj a-message)
+                    replybody))
+
+;;;;; 7
+
+;; tests
+(define-test-suite dual-credit-take-home
+  (check-equal? (remove-recipient "John" (message-recipients MSGA)) (list "Caleb" "Mark" "Jared"))
+  (check-equal? (recipients-known? MSGA) true)
+  (check-equal? (recipients-known? MSGB) false)
+  (check-equal? (add-user "Jared") (void))
+  MAILSYS
+  (check-equal? (new-conversation "Jared" (list "Caleb" "Phil") "Game Day" "is there game day saturday?") (void))
+  MAILSYS
+  (check-equal? (reply-to MSGA "Caleb" "Can't I have homework") (void))
+  MAILSYS)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+intermediate
+;;1
+;;add-pi: N -> number
+;;consumes: a natural number
+;;produces: that number added to pi
+(define (add-pi n)
+  (cond
+    [(zero? n) 3.14]
+    [else (add1 (add-pi (sub1 n)))]))
+
+(check-expect (add-pi 0) 3.14)
+(check-expect (add-pi 4) 7.14)
+
+;;2
+;;multiply-pi: N -> number
+;;consumes: a natural number
+;;produces: that number added to pi
+(define (multiply-pi n)
+  (cond
+    [(zero? n) 0]
+    [else (+ 3.14 (multiply-pi (sub1 n)))]))
+
+(check-expect (multiply-pi 0) 0)
+(check-expect (multiply-pi 2) 6.28)
+
+;;3
+;;add: N N -> N
+;;consumes: two natural numbers
+;;produces: their sum
+(define (add n1 n2)
+  (cond
+    [(= n1 0) n2]
+    [(= n2 0) n1]
+    [else (add1 (add n1 (sub1 n2)))]))
+
+
+(check-expect (add 1 3) 4)
+(check-expect (add 0 5) 5)
+(check-expect (add 5 0) 5)
+
+;;4
+;;multiply: N N -> N
+;;consumes: two natural-numbers
+;;produces: the product of those numbers
+(define (multiply n1 n2)
+  (cond
+    [(or (= 0 n1)
+         (= 0 n2)) 0]
+    [else (add n1 (multiply n1 (sub1 n2)))]))
+
+(check-expect (multiply 2 32) 64)
+(check-expect (multiply 0 5) 0)
+(check-expect (multiply 3 0) 0)
+
+;;5
+;;to-the: N N -> N
+;;consumes: two natural numbers
+;;produces: the first number to the power of the second
+(define (to-the n1 n2)
+  (cond
+    [(zero? n2) 1]
+    [else (multiply n1 (to-the n1 (sub1 n2)))]))
+
+(check-expect (to-the 2 0) 1)
+(check-expect (to-the 0 8) 0)
+(check-expect (to-the 2 4) 16)
+
+;;6
+;;A natural number greater than or equal to 2, N>=2, is:
+;;N>=2
+
+#|
+;;N2-fun: N -> ?
+;;consumes:
+;;produces: 
+(define (N2-fun n2)
+  (cond
+    [(< n2 2) ]
+    [else (N2-fun (sub1 n2))] |#
+
+;;7
+;;indb: N N -> boolean
+;;consumes: two natural numbers
+;;produces: whether the first is divisible by the second
+(define (indb n1 n2)
+  (cond
+    [(< n2 2) true]
+    [else (and (cond
+                [(= (remainder n1 n2) 0) false]
+                [else true])
+               (indb n1 (sub1 n2)))]))
+
+(check-expect (indb 2 2) false)
+(check-expect (indb 5 2) true)
+(check-expect (indb 2 0) true)
+
+;;8
+;;prime: N -> boolean
+;;consumes: a natural number
+;;produces: whether that number is prime or not
+(define (prime n1)
+  (indb n1 (sub1 n1)))
+
+(check-expect (prime 2) true)
+(check-expect (prime 8) false)
+(check-expect (prime 0) true)
+
+;;9
+;;A natural number greater than or equal to 50 is:
+;;N>=50
+
+#|
+;;N50-fun: N -> ?
+;;consumes:
+;;produces:
+(define (N50-fun n50)
+ (cond
+   [(< n50 50) ]
+   [else (N50-fun (sub1 n50))]))|#
+
+;;10
+;;up-to-50: N -> list-of-number
+;;consumes: a natural number less than or equal to fifty
+;;produces: a list of integers up to that number
+(define (up-to-50 n)
+ (cond
+   [(> n 50) empty]
+   [else (cons
+          n
+          (up-to-50 (add1 n)))]))
+
+(check-expect (up-to-50 20) (up-to-50 20))
+(check-expect (up-to-50 56) empty)
+
+;;11
+;;up-to: N N -> list-of-number
+;;consumes: two natural numbers
+;;produces: a list of integers starting at the first and ending at the second
+(define (up-to n1 n2)
+  (cond
+   [(> n1 n2) empty]
+   [else (cons
+          n1
+          (up-to (add1 n1) n2))]))
+
+(check-expect (up-to 3 9) (cons 3 (cons 4 (cons 5 (cons 6 (cons 7 (cons 8 (cons 9 empty))))))))
+(check-expect (up-to 3 0) empty)
+
+;;B
+
+;; A deep-list is
+;; empty, or
+;; (cons deep-list empty)
+
+;;1
+(define DL0 empty)
+(define DL1 (cons empty empty))
+(define DL2 (cons (cons empty empty) empty))
+(define DL3 (cons (cons (cons empty empty) empty) empty))
+(define DL4 (cons (cons (cons (cons empty empty) empty) empty) empty))
+
+;;2
+#|
+;; dl-fun: deep-list -> ?
+;; consumes:
+;; produces:
+(define (dl-fun adl)
+  (cond
+    [(empty? adl) ]
+    [else adl
+          (adl-fun (first adl))]))|#
+
+;;3
+;; add-dl: deep-list deep-list -> deep-list
+;; consumes: two deep lists
+;; produces: the deep list corresponding to their sum
+(define (add-dl adl1 adl2)
+  (cond
+    [(empty? adl1) adl2]
+    [(empty? adl2) adl1]
+    [else (cons (add-dl (first adl1) adl2) empty)]))
+
+(check-expect (add-dl DL0 DL3) (cons (cons (cons empty empty) empty) empty))
+(check-expect (add-dl DL1 DL0) (cons empty empty))
+(check-expect (add-dl DL1 DL2) (cons (cons (cons empty empty) empty) empty))
+
+;;4
+;;mult-dl: deep-list deep-list -> deep-list
+;;consumes: two deep lists
+;;produces: those deep lists multiplied together
+(define (mult-dl adl1 adl2)
+  (cond
+    [(empty? adl1) empty]
+    [(empty? adl2) empty]
+    [else (add-dl adl1 (mult-dl adl1 (first adl2)))]))
+
+(check-expect (mult-dl DL0 DL1) empty)
+(check-expect (mult-dl DL3 DL0) empty)
+(check-expect (mult-dl DL2 DL3) (cons (cons (cons (cons (cons (cons empty empty) empty) empty) empty) empty) empty))
+
+;;5
+;;dl-N: deep-list -> N
+;;consumes: a deep list
+;;produces: that deep list as a natural number
+(define (dl-N adl)
+  (cond
+    [(empty? adl) 0]
+    [else (add1 (dl-N (first adl)))]))
+
+(check-expect (dl-N DL0) 0)
+(check-expect (dl-N DL4) 4)
+
+;;6
+;;N-dl: N -> deep-list
+;;consumes: a natural number
+;;produces: the corresponding deep list
+(define (N-dl n)
+  (cond
+    [(zero? n) empty]
+    [else (cons (N-dl (sub1 n)) empty)]))
+
+(check-expect (N-dl 0) empty)
+(check-expect (N-dl 3) (cons (cons (cons empty empty) empty) empty))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+easy
+; character classes
+;              combat   magic   stealth
+; acrobat        2        0        5
+; archer         4        0        3
+; assassin       1        1        5
+; barbarian      6        0        1
+; battlemage     2        5        0
+; knight         5        1        1
+; mage           0        7        0
+; rogue          3        2        2
+; sorceror       1        6        0
+; thief          0        0        7
+; warrior        7        0        0
+
+;; a fighter is
+;;(make-fighter number number number)
+(define-struct fighter (combat magic stealth))
+
+;; fighter=?: fighter fighter -> boolean
+;; consumes: two fighters
+;; produces: whether or not they are the same
+(define (fighter=? fighter1 fighter2)
+  (and (= (fighter-combat fighter1) 
+          (fighter-combat fighter2)) 
+       (and (= (fighter-magic fighter1) 
+               (fighter-magic fighter2))
+            (= (fighter-stealth fighter1) 
+               (fighter-stealth fighter2)))))
+
+(define acrobat (make-fighter 2 0 5))
+(define archer (make-fighter 4 0 3))
+(define assassin (make-fighter 1 1 5))
+(define barbarian (make-fighter 6 0 1))
+(define battlemage (make-fighter 2 5 0))
+(define knight (make-fighter 5 1 1))
+(define mage (make-fighter 0 7 0))
+(define rogue (make-fighter 3 2 2))
+(define sorceror (make-fighter 1 6 0))
+(define thief (make-fighter 0 0 7))
+(define warrior (make-fighter 7 0 0))
+
+;; best-fighter: fighter fighter -> fighter
+;; consumes: two fighters
+;; produces: who has the higher fighting skill
+(define (best-fighter fighter1 fighter2)
+  (cond
+    [(> (fighter-combat fighter1) 
+        (fighter-combat fighter2)) fighter1]
+    [(< (fighter-combat fighter1) 
+        (fighter-combat fighter2)) fighter2]
+    [(= (fighter-combat fighter1)
+        (fighter-combat fighter2)) (cond
+                                     [(> (fighter-magic fighter1)
+                                         (fighter-magic fighter2)) fighter1]
+                                     [(< (fighter-magic fighter1)
+                                         (fighter-magic fighter2)) fighter2]
+                                     [else "tie"])]))
+
+;; best-mage: fighter fighter -> fighter
+;; consumes: two fighters
+;; produces: who has the higher magic skill
+(define (best-mage fighter1 fighter2)
+  (cond
+    [(> (fighter-magic fighter1) 
+        (fighter-magic fighter2)) fighter1]
+    [(< (fighter-magic fighter1) 
+        (fighter-magic fighter2)) fighter2]
+    [(= (fighter-magic fighter1) 
+        (fighter-magic fighter2)) (cond
+                                    [(> (fighter-stealth fighter1) 
+                                        (fighter-stealth fighter2)) fighter1]
+                                    [(< (fighter-stealth fighter1)
+                                        (fighter-stealth fighter2)) fighter2]
+                                    [else "tie"])]))
+
+;; best-assassin: fighter fighter -> fighter
+;; consumes: two fighters
+;; produces: who has the higher stealth skill
+(define (best-assassin fighter1 fighter2)
+  (cond
+    [(> (fighter-stealth fighter1) 
+        (fighter-stealth fighter2)) fighter1]
+    [(< (fighter-stealth fighter1) 
+        (fighter-stealth fighter2)) fighter2]
+    [(= (fighter-stealth fighter1) 
+        (fighter-stealth fighter2)) (cond
+                                      [(> (fighter-combat fighter1) 
+                                          (fighter-combat fighter2)) fighter1]
+                                      [(< (fighter-combat fighter1) 
+                                          (fighter-combat fighter2)) fighter2]
+                                      [else "tie"])]))
+
+;; deadliest-warrior: fighter fighter -> fighter
+;; consumes: two fighters
+;; produces: who is the deadliest
+(define (deadliest-warrior fighter1 fighter2)
+  (cond
+    [(fighter=? fighter1 fighter2) "same fighter-make another selection"]
+    [else (cond
+            [(and (fighter=? fighter1 
+                             (best-fighter fighter1 fighter2))
+                  (fighter=? fighter1 
+                             (best-mage fighter1 fighter2))) fighter1]
+            [(and (fighter=? fighter1 
+                             (best-fighter fighter1 fighter2))
+                  (fighter=? fighter1 
+                             (best-assassin fighter1 fighter2))) fighter1]
+            [(and (fighter=? fighter1 
+                             (best-assassin fighter1 fighter2))
+                  (fighter=? fighter1 
+                             (best-mage fighter1 fighter2))) fighter1]
+            [else fighter2])]))
+
+(check-expect (deadliest-warrior mage warrior) warrior)
+(check-expect (deadliest-warrior warrior assassin) assassin)
+(check-expect (deadliest-warrior warrior assassin) assassin)
+(check-expect (deadliest-warrior acrobat archer) acrobat)
+(check-expect (deadliest-warrior knight battlemage) knight)
+(check-expect (deadliest-warrior sorceror thief) sorceror)
+(check-expect (deadliest-warrior warrior warrior) "same fighter-make another selection")
+(check-expect (best-fighter warrior warrior) "tie")
+(check-expect (best-fighter warrior thief) warrior)
+(check-expect (best-fighter battlemage acrobat) battlemage)
+(check-expect (best-fighter thief mage) mage)
+(check-expect (best-mage archer acrobat) acrobat)
+(check-expect (best-mage thief thief) "tie")
+(check-expect (best-assassin thief thief) "tie")
+(check-expect (best-assassin barbarian knight) barbarian)

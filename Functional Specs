@@ -13,3 +13,7 @@ Get DrRacket running on the server.
 Figure out a way for it to take the code input by the user and send it to DrRacket to be run in a sandbox.
 If something bad is found, the user will be notified and the code will not be run.
 Teachers will be able to create questions, edit or remove existing questions, and/or put questions into a test.
+
+Types of users and accounts
+---------------------------
+The website will have different types of users and thus different types of accounts. There will be teacher, students, admins, and other random people who will prospectively be able to use the website. Hence, more accounts need to be available. There will be 3 types of accounts. A student account which will allow for the access of tests and assignments, and also the completion of said assignments and tests. There will also be teacher accounts, which will be the same as the student accounts, with the added bonus of being able to creat assignments and tests. Lastly there will be the admin account which is a teacher account but it will also allow for site updates and editing.

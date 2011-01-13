@@ -21,8 +21,9 @@ put your name in parentheses next to it
 -Website Mockup (Caleb and Andrew):
 	Make a fake website that looks like codingbat. It doesnt need to do
 	anything, just be something to work towards
+	loose website - totalwarfareattrition.webs.com
 
--Grader:
+-Grader: (Caleb)
 	We need to make our own grader that can take in a students assignment
 	and give back the number of tests passed and failed. There are two
 	main parts to this: firstly, the backend, or the grader itself, which
