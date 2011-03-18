@@ -1,4 +1,5 @@
 #lang racket
+(require racket/sandbox)
 (provide (all-defined-out))
 
 ;; check: any any integer
@@ -32,7 +33,7 @@
                                         checkNum
                                         (check-actual aCheck)
                                         (check-expected aCheck)
-                                        (anEva (check-actual aCheck))))
+                                        (call-in-sandbox-context anEva (λ () (check-actual aCheck)))))
 
 ;; suite-msg: string int int int int string -> string
 ;; consumes: a suite, the checks passed, the total checks, the earned, the possible points, and the fail message
@@ -69,7 +70,7 @@
        (for ([c (suite-checks aSuite)])
          (set! totalPoints (+ totalPoints (check-points c)))
          (set! currentTest (+ currentTest 1))
-         (if (equal? (anEva (check-actual c)) (anEva (check-expected c)))
+         (if (equal? (call-in-sandbox-context anEva (λ () (eval (check-actual c)))) (call-in-sandbox-context anEva (λ () (eval (check-expected c)))))
            (begin (set! points (+ points (check-points c)))
                   (set! passed (+ passed 1)))
            (set! failMessage

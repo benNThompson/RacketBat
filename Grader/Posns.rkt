@@ -7,12 +7,12 @@
 
 (define southeast-tests (make-check-suite
                          "Tests for SoutheastOf"
-                         ((southeast-of? (make-posn 50 50) (make-posn 60 51)) false 1)
-                         ((southeast-of? (make-posn 40 40) (make-posn 20 20)) true 1)
-                         ((southeast-of? (make-posn 60 60) (make-posn 70 61)) false 1)
-                         ((southeast-of? (make-posn 70 40) (make-posn 60 39)) true 1)
+                         ((southeast-of? (make-posn 50 50) (make-posn 60 51)) true 1)
+                         ((southeast-of? (make-posn 40 40) (make-posn 20 20)) false 1)
+                         ((southeast-of? (make-posn 60 60) (make-posn 70 61)) true 1)
+                         ((southeast-of? (make-posn 70 40) (make-posn 60 39)) false 1)
                          ((southeast-of? (make-posn 40 50) (make-posn 50 40)) false 1)
-                         ((southeast-of? (make-posn 50 50) (make-posn 49 49)) true 1)))
+                         ((southeast-of? (make-posn 50 50) (make-posn 49 49)) false 1)))
 
 (define which-direction-tests (make-check-suite
                                "Tests for which-direction-to"
@@ -35,6 +35,7 @@
                      ((posn+ (make-posn 20 50) (make-posn 50 50)) (make-posn 70 100) 1)))
 
 ;onimage? test (cannot do, need to RTFM)
+;; CAN DO IT NOW
 
 (define distance-tests (make-check-suite
                         "Tests for distance"
@@ -46,13 +47,12 @@
                         ((distance (make-posn 5 9) (make-posn 27 16)) (sqrt 533) 1)))
 
 
-;(define my-add-tests (make-check-suite
-;                      "Tests for my-add"
-;                      ((my-add 1 2) 3 1)
-;                      ((my-add 3 7) 10 1)
-;                      ((my-add 10 -5) 5 2)
-;                      ((my-add 1 0) 3 10)))
+(define my-add-tests (make-check-suite
+                      "Tests for my-add"
+                      ((my-add 1 2) 3 1)
+                      ((my-add 3 7) 10 1)
+                      ((my-add 10 -5) 5 2)
+                      ((my-add 1 2) 3 10)))
 
 
-(run-suites ev southeast-tests distance-tests posn+-tests which-direction-tests
-            )
+(run-suites ev southeast-tests distance-tests posn+-tests my-add-tests which-direction-tests)

@@ -2,30 +2,28 @@
 ;; about the language level of this file in a form that our tools can easily process.
 #reader(lib "htdp-advanced-reader.ss" "lang")((modname StudentWorkPosn) (read-case-sensitive #t) (teachpacks ()) (htdp-settings #(#t constructor repeating-decimal #t #t none #f ())))
 (require htdp/image)
-;(require rackunit)
-;(require rackunit/text-ui)
 
 ;; southeast-of?: posn posn -> boolean
 ;; determines if the second posn is southeast of the first
 (define (southeast-of? posn1 posn2)
-  (and (< (posn-x posn2) (posn-x posn1))
-       (< (posn-y posn2) (posn-y posn1))))
+  (and (> (posn-x posn2) (posn-x posn1))
+       (> (posn-y posn2) (posn-y posn1))))
 
 (define (ne posn1 posn2)
-  (and (< (posn-x posn2) (posn-x posn1))
-       (> (posn-y posn2) (posn-y posn1))))
+  (and (> (posn-x posn2) (posn-x posn1))
+       (< (posn-y posn2) (posn-y posn1))))
 (define (n posn1 posn2)
   (and (= (posn-x posn2) (posn-x posn1))
-       (> (posn-y posn2) (posn-y posn1))))
+       (< (posn-y posn2) (posn-y posn1))))
 (define (s posn1 posn2)
   (and (= (posn-x posn2) (posn-x posn1))
-       (< (posn-y posn2) (posn-y posn1))))
+       (> (posn-y posn2) (posn-y posn1))))
 (define (nw posn1 posn2)
   (and (< (posn-x posn2) (posn-x posn1))
-       (> (posn-y posn2) (posn-y posn1))))
+       (< (posn-y posn2) (posn-y posn1))))
 (define (sw posn1 posn2)
   (and (< (posn-x posn2) (posn-x posn1))
-       (< (posn-y posn2) (posn-y posn1))))
+       (> (posn-y posn2) (posn-y posn1))))
 (define (east posn1 posn2)
   (and (> (posn-x posn2) (posn-x posn1))
        (= (posn-y posn2) (posn-y posn1))))
@@ -55,19 +53,25 @@
 ;; distance: posn posn -> number
 ;; tells the distance between two posns
 (define (distance posn1 posn2)
-  (sqrt (+(expt (- (posn-x posn2) (posn-x posn1)) 2)
-          (expt (- (posn-y posn2) (posn-y posn1)) 2))))
+  (sqrt (+ (expt (- (posn-x posn2) (posn-x posn1)) 2)
+           (expt (- (posn-y posn2) (posn-y posn1)) 2))))
+
+;; my-add
+(define (my-add n1 n2)
+  (+ n1 n2))
 
 
-;(define-test-suite
- ;tests-check
-; (check-expect (which-direction-to (make-posn 50 50) (make-posn 50 50)) "youre there" 1)
-; (check-expect (which-direction-to (make-posn 50 50) (make-posn 60 60)) "southeast" 1)
-; (check-expect (which-direction-to (make-posn 50 50) (make-posn 40 40)) "northwest" 1)
-; (check-expect (which-direction-to (make-posn 50 50) (make-posn 50 40)) "north" 1)
-; (check-expect (which-direction-to (make-posn 60 60) (make-posn 60 70)) "south" 1)
-; (check-expect (which-direction-to (make-posn 50 50) (make-posn 60 40)) "northeast" 1)
-; (check-expect (which-direction-to (make-posn 60 50) (make-posn 50 70)) "southwest" 1)
-; (check-expect (which-direction-to (make-posn 85 85) (make-posn 100 85)) "east" 1)
-; (check-expect (which-direction-to (make-posn 73 73) (make-posn 52 73)) "west" 1)
-; (check-expect (which-direction-to (make-posn 195 195) (make-posn 195 195)) "youre there" 1))
+(check-expect (which-direction-to (make-posn 50 50) (make-posn 50 50)) "youre there")
+(check-expect (which-direction-to (make-posn 50 50) (make-posn 60 60)) "southeast")
+(check-expect (which-direction-to (make-posn 50 50) (make-posn 40 40)) "northwest")
+(check-expect (which-direction-to (make-posn 50 50) (make-posn 50 40)) "north")
+(check-expect (which-direction-to (make-posn 60 60) (make-posn 60 70)) "south")
+(check-expect (which-direction-to (make-posn 50 50) (make-posn 60 40)) "northeast")
+(check-expect (which-direction-to (make-posn 60 50) (make-posn 50 70)) "southwest")
+(check-expect (which-direction-to (make-posn 85 85) (make-posn 100 85)) "east")
+(check-expect (which-direction-to (make-posn 73 73) (make-posn 52 73)) "west")
+(check-expect (which-direction-to (make-posn 195 195) (make-posn 195 195)) "youre there")
+
+(check-expect (posn+ (make-posn 10 10) (make-posn 20 20)) (make-posn 30 30))
+
+(check-expect (distance (make-posn 50 50) (make-posn 50 50)) 0)
