@@ -16,7 +16,7 @@
 
 (define which-direction-tests (make-check-suite
                                "Tests for which-direction-to"
-                               ((which-direction-to (make-posn 50 50) (make-posn 50 50)) "you're there" 1)
+                               ((which-direction-to (make-posn 50 50) (make-posn 50 50)) "youre there" 1)
                                ((which-direction-to (make-posn 50 50) (make-posn 60 60)) "southeast" 1)
                                ((which-direction-to (make-posn 50 50) (make-posn 40 40)) "northwest" 1)
                                ((which-direction-to (make-posn 50 50) (make-posn 50 40)) "north" 1)
@@ -25,14 +25,14 @@
                                ((which-direction-to (make-posn 60 50) (make-posn 50 70)) "southwest" 1)
                                ((which-direction-to (make-posn 85 85) (make-posn 100 85)) "east" 1)
                                ((which-direction-to (make-posn 73 73) (make-posn 52 73)) "west" 1)
-                               ((which-direction-to (make-posn 195 195) (make-posn 195 195)) "you're there" 1)))
+                               ((which-direction-to (make-posn 195 195) (make-posn 195 195)) "youre there" 1)))
 
 (define posn+-tests (make-check-suite
                      "Tests for posn+"
-                     ((posn+ (make-posn 50 50) (make-posn 50 50)) 1 1)
-                     ((posn+ (make-posn 50 60) (make-posn 50 40)) 1 1)
-                     ((posn+ (make-posn 0 0) (make-posn 50 50)) 1 1)
-                     ((posn+ (make-posn 20 50) (make-posn 50 50)) 1 1)))
+                     ((posn+ (make-posn 50 50) (make-posn 50 50)) (make-posn 100 100) 1)
+                     ((posn+ (make-posn 50 60) (make-posn 50 40)) (make-posn 100 100) 1)
+                     ((posn+ (make-posn 0 0) (make-posn 50 50)) (make-posn 50 50) 1)
+                     ((posn+ (make-posn 20 50) (make-posn 50 50)) (make-posn 70 100) 1)))
 
 ;onimage? test (cannot do, need to RTFM)
 
@@ -54,4 +54,5 @@
 ;                      ((my-add 1 0) 3 10)))
 
 
-(run-suites ev southeast-tests which-direction-tests distance-tests posn+-tests)
+(run-suites ev southeast-tests distance-tests posn+-tests which-direction-tests
+            )

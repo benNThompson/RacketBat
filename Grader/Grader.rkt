@@ -22,7 +22,7 @@
 (define-syntax make-check-suite
   (syntax-rules ()
     ((_ aName (actualResult expectedResult pointValue) ...)
-     (suite aName (list (check (quote actualResult) expectedResult pointValue) ...)))))
+     (suite aName (list (check (quote actualResult) (quote expectedResult) pointValue) ...)))))
 
 ;; fail-msg: check int evaluator -> string
 ;; consumes: a failed check, its number, and the corresponding evaluator
@@ -78,7 +78,7 @@
        (display (suite-msg (suite-name aSuite) passed numChecks points totalPoints failMessage))))))
 
 ;; run-suites: list-of-check ... evaluator -> void
-;; consumes: multiple check suites
+;; consumes: multiple check suites and an evaluator
 ;; produces: runs them all and prints the results
 (define-syntax run-suites
   (syntax-rules ()
