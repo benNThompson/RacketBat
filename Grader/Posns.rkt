@@ -1,8 +1,9 @@
+#! /usr/bin/env gracket
 #lang racket
 (require "Grader.rkt")
 (require racket/sandbox)
 
-(define ev (make-module-evaluator (string->path "StudentWorkPosn.rkt")
+(define ev (make-module-evaluator (string->path (vector-ref (current-command-line-arguments) 0))
                                   #:allow-read (list (string->path "."))))
 
 (define southeast-tests (make-check-suite
